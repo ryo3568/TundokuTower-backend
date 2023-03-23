@@ -8,7 +8,7 @@ app.use(express.json())
 const jwt = require("jsonwebtoken")
 const auth = require("./utils/auth")
 const connectDB = require("./utils/database")
-const { ItemModel, UserModel } = require("./utils/schemaModels")
+const { UserModel, BookModel } = require("./utils/schemaModels")
 
 
 // ITEM functions
@@ -16,7 +16,7 @@ const { ItemModel, UserModel } = require("./utils/schemaModels")
 app.post("/item/create", auth, async(req, res) => {
     try{
         await connectDB()
-        await ItemModel.create(req.body)
+        await BookModel.create(req.body)
         return res.status(200).json({message: "アイテム作成成功"})
     }catch(err){
         return res.status(400).json({message: "アイテム作成失敗"})
@@ -27,7 +27,7 @@ app.post("/item/create", auth, async(req, res) => {
 app.get("/", async(req, res) => {
     try{
         await connectDB()
-        const allItems = await ItemModel.find()
+        const allItems = await BookModel.find()
         return res.status(200).json({message: "アイテム読み取り成功(all)", allItems: allItems})
     }catch(err){
         return res.status(400).json({message: "アイテム読み取り失敗(all)"})
@@ -38,7 +38,7 @@ app.get("/", async(req, res) => {
 app.get("/item/:id", async(req, res) => {
     try{
         await connectDB()
-        const singleItem = await ItemModel.findById(req.params.id)
+        const singleItem = await BookModel.findById(req.params.id)
         return res.status(200).json({message: "アイテム読み取り成功(single)", singleItem: singleItem})
     }catch(err){
         return res.status(400).json({message: "アイテム読み取り失敗(single)"})
@@ -49,9 +49,9 @@ app.get("/item/:id", async(req, res) => {
 app.put("/item/update/:id", auth, async(req, res) => {
     try{
         await connectDB()
-        const singleItem = await ItemModel.findById(req.params.id)
+        const singleItem = await BookModel.findById(req.params.id)
         if(singleItem.email === req.body.email){
-            await ItemModel.updateOne({_id: req.params.id}, req.body)
+            await BookModel.updateOne({_id: req.params.id}, req.body)
             return res.status(200).json({message: "アイテム編集成功"})
         }else{
             throw new Error()
@@ -65,9 +65,9 @@ app.put("/item/update/:id", auth, async(req, res) => {
 app.delete("/item/delete/:id", auth, async(req, res) => {
     try{
         await connectDB()
-        const singleItem = await ItemModel.findById(req.params.id)
+        const singleItem = await BookModel.findById(req.params.id)
         if(singleItem.email === req.body.email){
-            await ItemModel.deleteOne({_id: req.params.id})
+            await BookModel.deleteOne({_id: req.params.id})
             return res.status(200).json({message: "アイテム削除成功"})
         }else{
             throw new Error()
