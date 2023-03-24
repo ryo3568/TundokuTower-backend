@@ -3,15 +3,6 @@ const mongoose = require("mongoose")
 
 const Schema = mongoose.Schema
 
-const ItemSchema = new Schema({
-    title: String,
-    author: String,
-    isbn: String,
-    publisher: String,
-    image: String,
-    email: String,
-})
-
 const UserSchema = new Schema({
     name: {
         type: String,
@@ -28,5 +19,14 @@ const UserSchema = new Schema({
     }
 })
 
-exports.ItemModel = mongoose.model("Item", ItemSchema)
+const BookSchema = new Schema({
+    title: String,
+    author: String,
+    image: String,
+    pages: Number,
+    status: Boolean,
+    email: String
+})
+
 exports.UserModel = mongoose.model("User", UserSchema)
+exports.BookModel = mongoose.model("Book", BookSchema)
