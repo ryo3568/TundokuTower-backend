@@ -24,7 +24,7 @@ app.post("/item/create", auth, async(req, res) => {
 })
 
 // Read All Items
-app.get("/", async(req, res) => {
+app.get("/item/all", async(req, res) => {
     try{
         await connectDB()
         const allItems = await BookModel.find()
@@ -35,13 +35,35 @@ app.get("/", async(req, res) => {
 })
 
 // Read Single Item
-app.get("/item/:id", async(req, res) => {
+app.get("/item/single/:id", async(req, res) => {
     try{
         await connectDB()
         const singleItem = await BookModel.findById(req.params.id)
         return res.status(200).json({message: "アイテム読み取り成功(single)", singleItem: singleItem})
     }catch(err){
         return res.status(400).json({message: "アイテム読み取り失敗(single)"})
+    }
+})
+
+// Read Unread Books
+app.get("/item/unread", async(req, res) => {
+    try{
+        await connectDB()
+        const unreadItems = await BookModel.find({status: false})
+        return res.status(200).json({message: "アイテム読み取り成功(unread)", unreadItems: unreadItems})
+    }catch(err){
+        return res.status(400).json({message: "アイテム読み取り失敗(unread)"})
+    }
+})
+
+// Read Finished Books
+app.get("/item/finished", async(req, res) => {
+    try{
+        await connectDB()
+        const finishedItems = await BookModel.find({status: true})
+        return res.status(200).json({message: "アイテム読み取り成功(finished)", finishedItems: finishedItems})
+    }catch(err){
+        return res.status(400).json({message: "アイテム読み取り失敗(finished)"})
     }
 })
 
